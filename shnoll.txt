@@ -1,0 +1,273 @@
+import numpy
+import numpy as np
+from numpy.fft import fft, fftfreq
+import matplotlib.pyplot as plt
+from numpy import linspace, loadtxt, ones, convolve
+from numpy import array, zeros, argmin, inf
+from numpy.linalg import norm
+
+def _trackeback(D):
+    i, j = array(D.shape) - 1
+    p, q = [i], [j]
+    while (i > 0 and j > 0):
+        tb = argmin((D[i-1, j-1], D[i-1, j], D[i, j-1]))
+        if (tb == 0):
+            i = i - 1
+            j = j - 1
+        elif (tb == 1):
+            i = i - 1
+        elif (tb == 2):
+            j = j - 1
+        p.insert(0, i)
+        q.insert(0, j)
+    p.insert(0, 0)
+    q.insert(0, 0)
+    return (array(p), array(q))
+
+def dtw(dr):
+    r, c = len(dr), len(dr[0]);
+    D = zeros((r + 1, c + 1));
+    D[0, 1:] = inf
+    D[1:, 0] = inf
+    for i in range(r):
+        for j in range(c):
+            D[i+1, j+1] = dr[i][j];
+    for i in range(r):
+        for j in range(c):
+            D[i+1, j+1] += min(D[i, j], D[i, j+1], D[i+1, j])
+    D = D[1:, 1:];
+    dist = D[-1, -1] / sum(D.shape);
+    return dist, D, _trackeback(D)
+
+
+
+
+
+
+
+
+ma0=[];ma0.append([line.strip() for line in open('/users/andrejeremcuk/downloads/0505.jnl')]);
+massa=[];m=[[0] for e in range(len(ma0[0]))];massamyfile=[];
+import re
+
+t=3;summa=[];
+for e in range(3,int(len(ma0[0])/2)): #len(ma0[0])
+ disguise=re.findall(r":(.+?) ", ma0[0][t]);disguise1=re.findall(r"- #1:(.*)", ma0[0][t]);
+ summa.append(int(disguise[0]));summa.append(int(disguise1[0]));t=t+2;
+
+k=0;summ=[];sum1=[];
+for e in range(int(len(summa)/2)):
+ summ.append(summa[k]);sum1.append(summa[k+1]);k=k+2;
+
+
+
+
+
+
+
+import math
+import random
+from statistics import mean
+koeff=60;ex=20;ko=60;b=[0 for e in range(ko+ex)];bb=[0 for e in range(ko+ex)];
+#matrix = [line.strip() for line in open('/users/andrejeremcuk/downloads/days.dat')];
+
+
+matrix = [line.strip() for line in open('/users/andrejeremcuk/downloads/0505.txt')];
+matrix1 = [line.strip() for line in open('/users/andrejeremcuk/downloads/0506.txt')];
+matrixd = [line.strip() for line in open('/users/andrejeremcuk/downloads/days.dat')];
+
+
+arra=[[ 0 for e in range(koeff)] for t in range(int(len(matrix)/koeff))];harra=[0 for t in range(int(len(matrix)/koeff))];
+arra1=[[ 0 for e in range(koeff)] for t in range(int(len(matrix)/koeff))];harra1=[0 for t in range(int(len(matrix)/koeff))];
+arrad=[[ 0 for e in range(koeff)] for t in range(int(len(matrixd)/koeff))];harrad=[0 for t in range(int(len(matrixd)/koeff))];
+
+for i in range(len(matrix)): matrix[i]=int(matrix[i]);matrix1[i]=int(matrix1[i]);
+
+for i in range(len(matrixd)): matrixd[i]=int(matrixd[i]);
+
+z=0;
+for jk in range(int(len(matrix)/koeff)): #int(len(matrix)/koeff)
+ for mk in range(koeff): arra[jk][mk]=float(matrix[z]);arra1[jk][mk]=float(matrix1[z]);z=z+1;
+
+for jk in range(int(len(matrix)/koeff)): harra[jk]=sorted(arra[jk]);harra1[jk]=sorted(arra1[jk])
+
+z=0;
+for jk in range(int(len(matrixd)/koeff)): 
+ for mk in range(koeff): arrad[jk][mk]=float(matrixd[z]);z=z+1;
+
+for jk in range(int(len(matrixd)/koeff)): harrad[jk]=sorted(arrad[jk]);
+
+
+harra1[369]==harra[369]
+arra1[369]==arra[369]
+
+
+------------------------------------------------------------------
+for jk in range(int(len(matrix)/koeff)): 
+ average=mean(harra[jk])
+ for mk in range(koeff): harra[jk][mk]=harra[jk][mk]/average
+ average1=mean(harra1[jk])
+ for mk in range(koeff): harra1[jk][mk]=harra1[jk][mk]/average1
+
+for jk in range(int(len(matrixd)/koeff)): 
+ averaged=mean(harrad[jk])
+ for mk in range(koeff): harrad[jk][mk]=harrad[jk][mk]/averaged
+
+
+
+
+def distt(rast):
+    statistic=0;statis=0;
+    for i in range(len(summ)):
+     jk=i;x=harra[summ[jk]-1];y=harra[sum1[jk]-1];
+     rt=stat(x,y);#r=stat(y,x);
+     #if r<rt: rt=r;
+     statistic+=rt;#statistic+=stat(y,x);#print(rt);
+     x=harra[random.randint(0,2790)];y=harra[random.randint(0,2790)];
+     rt=stat(x,y);#r=stat(y,x);
+     #if r<rt: rt=r;
+     statis+=rt;#statis+=stat(y,x);#print(rt);
+    return statis,statistic;
+
+
+distt(1)
+
+
+def stat(x,y):
+    pikk=[[float("inf") for m in range(len(y))] for t in range(len(x))];
+    for e in range(len(x)):
+     for l in range(len(y)): pikk[e][l]=(((abs(x[e]-y[l])))*(abs(e-l)+1));
+    dt=dtw(pikk)
+    p1=dt[2][0];p=dt[2][1];
+    res=0;uj=0;rmu=0;
+    for e in range(len(p)): 
+     for l in range(len(p1)):
+      pl=p[l];pe=p[e];ml=p1[l];me=p1[e];  
+      #pl=l;pe=e;ml=l;me=e;  
+      ret=0;re=1;rea=0;red=0;ab=abs(y[pl]-y[pe]);ac=(pe-pl);rmt=abs(1-x[ml]/y[pl]);rmr=abs(1-x[me]/y[pe]);
+      au=abs(x[ml]-x[me]);ao=(me-ml);hip=math.sqrt(ab**2+ac**2);hipe=math.sqrt(ao**2+au**2);
+      if (1<ml<58)&(1<pl<58)&(1<me<58)&(1<pe<58):       
+       rea=abs(1-abs(abs(y[pl-1]*y[pl]*y[pl+1]*y[pl+2])/y[pl]**4))+abs(1-abs((y[pe-1]*y[pe]*y[pe+1]*y[pe+2])/y[pe]**4))
+       rea+=abs(1-abs(abs(x[ml-1]*x[ml]*x[ml+1]*x[ml+2])/x[ml]**4))+abs(1-abs((x[me-1]*x[me]*x[me+1]*x[me+2])/x[me]**4))
+      else: rea=0;
+      if (hip!=0)and(hipe!=0): 
+       if (math.asin(abs(au)/hipe)!=0)&(math.asin((ab)/hip)!=0):
+        red=0+abs(1-abs(math.asin((ab)/hip)/math.asin((au)/hipe)));
+        red+=abs(1-abs(math.asin((au)/hipe))/math.asin((ab)/hip));
+      if (x[me]!=0)and(y[pe]!=0)and(x[ml]!=0)and(y[pl]!=0): 
+       ret=0+abs(1-abs((0.00+abs(float(y[pl])/float(y[pe])))/(0.00+abs(float(x[ml])/float(x[me])))));
+       ret+=abs(1-abs((float(x[ml])/float(x[me]))/(float(y[pl])/float(y[pe]))));
+      re=1+abs(1-abs(float(abs(pe-pl)+1))/float(abs(me-ml)+1));rme=(y[pe]+0)+(y[pl]+0)+(x[me]+0)+(x[ml]+0);rmu+=rme;
+      #print(rme);
+      #print(rea,red,ret,re,(abs(e-l)+1),rme);
+      if rea==0: rea=1;
+      res+=abs(ret*red*red*rea)*(abs(e-l)+1)*rme*re;uj=uj+1; 
+    if uj==0: uj=1;
+    return res/uj#/rmu#*rmu *(abs(x[ml]-y[pe])+0.01)         *(abs(x[ml]-y[pe])+abs(x[me]-y[pl]))
+
+distt(1)
+
+
+
+
+
+def distd(rast):
+    statistic=0;statis=0;
+    for i in range(14400):
+    #jk=i;x=harra[summ[jk]-1];y=harra[sum1[jk]-1];#rt=stat(y,x)
+     jk=i+0000;x=harrad[jk];y=harrad[jk+rast];
+     rt=stat(x,y);#r=stat(y,x);
+     #if r<rt: rt=r;
+     statistic+=rt;#statistic+=stat(y,x);#print(rt);
+     #jk=i+0000;x=harra1[jk];y=harra1[jk+rast];
+     #rt=stat(x,y);#r=stat(y,x);
+     #statis+=rt;#statis+=stat(y,x);#print(rt);
+    return statis,statistic;
+
+def dist1(rast):
+    statistic=0;statis=0;
+    for i in range(1440):
+    #jk=i;x=harra[summ[jk]-1];y=harra[sum1[jk]-1];#rt=stat(y,x)
+     jk=i+0000;x=harra[jk];y=harra[jk+rast];
+     rt=stat(x,y);#r=stat(y,x);
+     #if r<rt: rt=r;
+     #rt=dot[1440*3+i][1]#stat(y,x)
+     #dot1.append((rast,rt,i))
+     #print rt;
+     #if rt<1.0e-12: rt=1;
+     statistic+=rt;#statistic+=stat(y,x);#print(rt);
+     jk=i+0000;x=harra1[jk];y=harra1[jk+rast];
+     rt=stat(x,y);#r=stat(y,x);
+     statis+=rt;#statis+=stat(y,x);#print(rt);
+    return statis,statistic;
+
+def dist(rast):
+    statistic=0;statis=0;
+    for i in range(1440):
+     #jk=i;x=harra[summ[jk]-1];y=harra[sum1[jk]-1];#rt=stat(y,x)
+     jk=i+000;x=harra1[jk];y=harra[jk+rast];
+     rt=stat(x,y);#r=stat(y,x);
+     #if r<rt: rt=r;
+     #rt=dot[1440*3+i][1]#stat(y,x)
+     #dot.append((rast,rt,i))
+     #print rt;
+     #if rt<1.0e-12: rt=1;
+     statistic+=rt;#statistic+=stat(y,x);#print(rt);
+     jk=i+000;x=harra[jk];y=harra1[jk+rast];
+     rt=stat(x,y);#r=stat(y,x);
+     #if r<rt: rt=r;
+     statis+=rt;
+    return statis,statistic;
+
+
+
+
+
+
+
+d0=[];
+for i in range(len(d1)):
+ d0.append((d1[i][0],1440-i))
+ print(d0[-1])
+
+with open("d0.txt", "w") as txt_file:
+    for line in d0:
+        txt_file.write(" ".join(str(v) for v in line) + "\n") 
+
+
+d01=[];
+for i in range(len(d1)):
+ test=int(d1[i][0][0]+d1[i][0][1])/2
+ d01.append(test)
+ print(d01[-1])
+
+with open("d01.txt", "w") as txt_file:
+    for line in d01:
+        txt_file.write(str(line) + "\n") 
+
+
+d02=[];
+for i in range(len(d)):
+ test=int(d[i][0][0]+d[i][0][1])/2
+ d02.append(test)
+ print(d02[-1])
+
+
+d=[];
+for i in range(1440): 
+ print(i);
+ d.append((dist(i),i));
+ print(d[-1]);
+
+
+d1=[];
+for i in range(1440): 
+ print(i);
+ d1.append((dist1(1440-i),i));
+ print(d1[-1]);
+
+
+import numpy
+numpy.argsort(d01)
+
+
