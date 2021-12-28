@@ -17,7 +17,7 @@ def stat_distanc(counter):
      elif counter=='o': x=harra[summ[mk]-1];y=harra[sum1[mk]-1];
      else: x=harra[mk+1440-counter];y=harrab[mk];
      x=x.tolist();y=y.tolist();
-     for kl in range(ko): b[kl+ex/2]=y[kl];
+     for k in range(ko): b[int(k+ex/2)]=y[k];
      for m in range(ex):
       ct=[0 for e in range(ko+ex)]; 
       for l in range(ko): ct[l+m]=x[l];
@@ -49,3 +49,4 @@ stat_distanc(1072)
 
 bas=[];
 for i in range(1440): bas.append(stat_distanc(i));print(i);
+    
