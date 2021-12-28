@@ -13,7 +13,7 @@ def stat_distanc(counter):
      for u in range(5): harra[jk] = movingaverage(harra[jk], 4);harrab[jk]=movingaverage(harrab[jk], 4);
     for mk in range(1440):# 24000
      mi=[];mis=[];mis1=[];mii=[];ei=[];ti=[];dots=[];dots1=[];
-     if counter=='l': rn=random.randint(0,1439);x=harra[mk];y=harrab[random.randint(0,1439)];#print rn;  #y=harra[random.randint(0,1439)];
+     if counter=='r': rn=random.randint(0,1439);x=harra[mk];y=harrab[random.randint(0,1439)];#print rn;  #y=harra[random.randint(0,1439)];
      elif counter=='o': x=harra[summ[mk]-1];y=harra[sum1[mk]-1];
      else: x=harra[mk+1440-counter];y=harrab[mk];
      x=x.tolist();y=y.tolist();
@@ -42,7 +42,7 @@ def stat_distanc(counter):
      #minmaxx=mx2[:];plt.plot(minmaxx,dots,'go');plt.plot(my1,dots1,'bo');plt.plot(y);plt.plot(x[::-1]);plt.show(); #plt.plot(x);
     return resume/10000;
 
-stat_distanc('l')
+stat_distanc('r')
 stat_distanc(0)
 
 stat_distanc(1072)
