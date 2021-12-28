@@ -173,7 +173,7 @@ data=[];
 def stat_distanc(counter):
     for mk in range(1440*15):# 24000
      mi=[];mis=[];mis1=[];mii=[];ei=[];ti=[];dots=[];dots1=[];resume=0;resum=0;
-     if counter=='l': rn=random.randint(0,1439);x=harra[mk];y=harra[random.randint(0,1440*48)];#print rn;  #y=harra[random.randint(0,1439)];
+     if counter=='r': rn=random.randint(0,1439);x=harra[mk];y=harra[random.randint(0,1440*48)];#print rn;  #y=harra[random.randint(0,1439)];
      else: y=harra[mk+int(1440*29.5306)-counter];x=harra[mk];#29.5306 #27.32
      #print(x);print(y)
      optimal=0;ret=pik(x,y);minmaxx=ret[6];minmaxy=ret[7];maxx=ret[0];maxy=ret[1];minx=ret[2];miny=ret[3]
