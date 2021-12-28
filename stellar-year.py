@@ -48,4 +48,4 @@ stat_distanc(0)
 stat_distanc(1072)
 
 bas=[];
-for i in range(1440): bas.append(stat_distanc(i));print i;
+for i in range(1440): bas.append(stat_distanc(i));print(i);
