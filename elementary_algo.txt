@@ -1,0 +1,47 @@
+import math
+import random
+from statistics import mean
+koeff=60;
+matrix = [line.strip() for line in open('/users/andrejeremcuk/downloads/0505.txt')];
+matrix1 = [line.strip() for line in open('/users/andrejeremcuk/downloads/0506.txt')];
+matrixd = [line.strip() for line in open('/users/andrejeremcuk/downloads/days.dat')];
+
+
+arra=[[ 0 for e in range(koeff)] for t in range(int(len(matrix)/koeff))];
+arra1=[[ 0 for e in range(koeff)] for t in range(int(len(matrix)/koeff))];
+arrad=[[ 0 for e in range(koeff)] for t in range(int(len(matrixd)/koeff))];
+
+for i in range(len(matrix)): matrix[i]=int(matrix[i]);matrix1[i]=int(matrix1[i]);
+
+for i in range(len(matrixd)): matrixd[i]=int(matrixd[i]);
+
+z=0;
+for jk in range(int(len(matrix)/koeff)): #int(len(matrix)/koeff)
+ for mk in range(koeff): arra[jk][mk]=float(matrix[z]);arra1[jk][mk]=float(matrix1[z]);z=z+1;
+
+z=0;
+for jk in range(int(len(matrixd)/koeff)): 
+ for mk in range(koeff): arrad[jk][mk]=float(matrixd[z]);z=z+1;
+
+
+
+def dt2(x,y):
+    uu=0;
+    for i in range(len(x)-3):
+     uu1=abs((x[i]/x[i+1])-(y[i]/y[i+1]));
+     uu2=abs((x[i]/x[i+2])-(y[i]/y[i+2]));
+     uu3=abs((x[i]/x[i+3])-(y[i]/y[i+3]));
+     uu+=uu1+uu2+uu3;
+    return uu;
+
+
+
+def distt(rast):
+    statistic=0;
+    for jk in range(1440):
+     x=arra[jk];y=arra1[jk+rast];
+     statistic+=dt2(x,y);
+    return statistic;
+
+
+distt(368)
